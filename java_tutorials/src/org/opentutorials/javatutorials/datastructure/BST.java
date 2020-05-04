@@ -1,4 +1,4 @@
-package org.opentutorials.javatutorials.DataStructure;
+package org.opentutorials.javatutorials.datastructure;
 
 public class BST<T extends Comparable<T>> {//자기 자신과 비교 가능한 모든 자료형 E
 	

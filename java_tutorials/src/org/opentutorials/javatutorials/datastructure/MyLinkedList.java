@@ -1,4 +1,4 @@
-package org.opentutorials.javatutorials.DataStructure;
+package org.opentutorials.javatutorials.datastructure;
 
 import java.util.Iterator;
 import java.util.ListIterator;

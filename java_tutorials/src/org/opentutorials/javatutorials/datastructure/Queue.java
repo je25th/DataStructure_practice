@@ -1,4 +1,4 @@
-package org.opentutorials.javatutorials.DataStructure;
+package org.opentutorials.javatutorials.datastructure;
 
 public class Queue {
 

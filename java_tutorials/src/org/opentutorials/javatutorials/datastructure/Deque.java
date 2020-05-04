@@ -1,4 +1,4 @@
-package org.opentutorials.javatutorials.DataStructure;
+package org.opentutorials.javatutorials.datastructure;
 
 public class Deque {
 	static int MAX_ARRAY_SIZE = 10000;

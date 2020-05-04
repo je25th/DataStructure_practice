@@ -9,75 +9,96 @@ import java.util.Arrays;
 import java.util.StringTokenizer;
 
 public class Main {
+
+	static int ARRAY_SIZE = 20000;
+	static Queue q;
+	static int[] check;
 	
 	public static void main(String[] args) throws IOException{
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
-		
-		int node_count = Integer.parseInt(br.readLine());
-		int[] array = new int[node_count];
+
 		StringTokenizer stk = new StringTokenizer(br.readLine());
-		for(int i=0; i<node_count; i++)
+		int node_count = Integer.parseInt(stk.nextToken());
+		int edge_count = Integer.parseInt(stk.nextToken());
+		int start_node = Integer.parseInt(stk.nextToken());
+		int[][] graph = new int[ARRAY_SIZE][ARRAY_SIZE];
+		for(int i=0; i<edge_count; i++)
 		{
-			array[i] = Integer.parseInt(stk.nextToken());
+			stk = new StringTokenizer(br.readLine());
+			int a = Integer.parseInt(stk.nextToken());
+			int b = Integer.parseInt(stk.nextToken());
+			graph[a][b] = 1;
+			graph[b][a] = 1;
 		}
-		Arrays.sort(array);
 		
-		int find_num_count = Integer.parseInt(br.readLine());
-		stk = new StringTokenizer(br.readLine());
-		for(int i=0; i<find_num_count; i++)
-		{
-			int num = Integer.parseInt(stk.nextToken());
-			bw.write(upper_index(array, num)-lower_index(array, num) + " ");
-		}
+		check = new int[graph.length];
+		DFS(graph, start_node);
+		System.out.println();
+
+		q = new Queue();
+		check = new int[graph.length];
+		q.push(start_node);
+		check[start_node] = 1;//방문했음:1 / 아직 미방문:0
+		BFS(graph);
 		
 		bw.flush();
 		bw.close();
 		br.close();
 	}
 	
-	public static int lower_index(int[] array, int num)
+	public static void DFS(int[][] array, int visit)
 	{
-		int mid = 0;
-		int left = 0;
-		int right = array.length - 1;
+		System.out.print(visit + " ");
 		
-		while(left < right)
+		check[visit] = 1;//방문했음:1 / 아직 미방문:0
+		for(int i=0; i<array.length; i++)
 		{
-			mid = (right + left)/2;
-			if(array[mid] >= num)
-				right = mid;
-			else
-				left = mid+1;
+			if(array[visit][i] == 1 && check[i] == 0)
+			{
+				DFS(array, i);
+			}
 		}
-		
-		//if(left-1 >=0 && left-1 < array.length && array[left-1] != num)
-		//	left = 0;
-		
-		return right;
 	}
 	
-	public static int upper_index(int[] array, int num)
+	public static void BFS(int[][] array)
 	{
-		int mid = 0;
-		int left = 0;
-		int right = array.length - 1;
+		int pop = q.pop();
+		if(pop == -1)
+			return;
 		
-		while(left < right)
+		System.out.print(pop + " ");
+		
+		for(int i=0; i<array.length; i++)
 		{
-			mid = (right + left)/2;
-			if(array[mid] > num)
-				right = mid;
-			else
-				left = mid+1;
+			if(array[pop][i] == 1 && check[i] == 0)
+			{
+				q.push(i);
+				check[i] = 1;
+			}
 		}
 		
-		//if(right+1 >=0 && right+1 < array.length && array[right+1] != num)
-		//	right = 0;
-		if(array[right] == num && right == array.length - 1)
-			right++;
+		BFS(array);
+	}
+	
+	static class Queue
+	{
+		int[] queue = new int[ARRAY_SIZE];
+		private int front = 0;
+		private int rear = 0;
 		
-		return right;
+		public void push(int item)
+		{
+			queue[rear++] = item;
+		}
+		
+		public int pop()
+		{
+			if(front < rear)
+				return queue[front++];
+			
+			return -1;
+		}
 	}
 
 }
